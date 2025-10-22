@@ -103,7 +103,7 @@ class Agent:
 
     def _load_mcp_tools(self) -> None:
         """Load tools from MCP server"""
-        if hasattr(self.mcp_server, "get_tools"):
+        if self.mcp_server and hasattr(self.mcp_server, "get_tools"):
             for tool in self.mcp_server.get_tools():
                 self.tools[tool.name] = tool
 
@@ -358,8 +358,7 @@ class Agent:
         """Reset the agent's conversation memory"""
         system_messages = [msg for msg in self.memory.messages if msg.role == "system"]
         self.memory.messages.clear()
-        for msg in system_messages:
-            self.memory.add_message(msg)
+        self.memory.messages.extend(system_messages)
 
     def get_history(self) -> List[Message]:
         """Get the conversation history"""

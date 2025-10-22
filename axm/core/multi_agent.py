@@ -58,7 +58,7 @@ For each subtask, specify which agent should handle it and what they should do."
         if verbose:
             print(f"🤝 Starting collaboration on: {task}\n")
 
-        conversation_history = []
+        conversation_history: List[Dict[str, str]] = []
 
         for round_num in range(max_rounds):
             if verbose:
@@ -74,7 +74,7 @@ What should we do next? Assign work to agents or provide final answer.
 If providing final answer, start with "FINAL:".
 Otherwise, format as: ASSIGN <agent_role>: <instruction>"""
 
-            orchestrator_response = self.orchestrator.run(orchestrator_prompt)
+            orchestrator_response: str = self.orchestrator.run(orchestrator_prompt)
 
             if verbose:
                 print(f"🎯 Orchestrator: {orchestrator_response[:100]}...\n")
@@ -87,7 +87,7 @@ Otherwise, format as: ASSIGN <agent_role>: <instruction>"""
                 return final_answer
 
             # Parse agent assignments
-            assignments = self._parse_assignments(orchestrator_response)
+            assignments = self._parse_assignments(str(orchestrator_response))
 
             # Execute assignments
             for agent_role, instruction in assignments.items():
@@ -116,7 +116,7 @@ All work completed:
 
 Provide a comprehensive final answer synthesizing all the work."""
 
-        final_answer = self.orchestrator.run(final_prompt)
+        final_answer: str = self.orchestrator.run(final_prompt)
         return final_answer
 
     def _parse_assignments(self, response: str) -> Dict[str, str]:

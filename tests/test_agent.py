@@ -11,13 +11,20 @@ class MockLLMProvider(LLMProvider):
     def __init__(self, response_text: str = "Mock response"):
         self.response_text = response_text
         self.generate_call_count = 0
+        self.custom_generate = None  # For custom generate function
 
     def generate(self, messages, **kwargs):
         self.generate_call_count += 1
+        # Use custom generate if provided
+        if self.custom_generate:
+            return self.custom_generate(messages, **kwargs)
         return Message(role="assistant", content=self.response_text)
 
     async def agenerate(self, messages, **kwargs):
         self.generate_call_count += 1
+        # Use custom generate if provided
+        if self.custom_generate:
+            return self.custom_generate(messages, **kwargs)
         return Message(role="assistant", content=self.response_text)
 
     def stream(self, messages, **kwargs):
@@ -83,7 +90,7 @@ def test_agent_run():
 
 def test_agent_with_tool_execution():
     """Test agent with tool execution"""
-    mock_llm = MockLLMProvider("Tool result received")
+    mock_llm = MockLLMProvider("I got the information")
     agent = Agent(mock_llm)
 
     # Add a tool that should be called
@@ -91,11 +98,15 @@ def test_agent_with_tool_execution():
     def get_info(topic: str) -> str:
         return f"Information about {topic}"
 
-    # Mock the LLM to respond with a tool call first, then a final response
-    mock_llm.response_text = "I got the information"
+    # Track call count outside
+    call_count = {"value": 0}
 
+    # Set up custom generate function to respond with tool call first, then final response
     def mock_generate(messages, **kwargs):
-        if mock_llm.generate_call_count == 0:
+        current_count = call_count["value"]
+        call_count["value"] += 1
+
+        if current_count == 0:
             # First call - return tool call
             return Message(
                 role="assistant",
@@ -112,11 +123,11 @@ def test_agent_with_tool_execution():
             # Second call - return final response
             return Message(role="assistant", content="I got the information")
 
-    mock_llm.generate = mock_generate
+    mock_llm.custom_generate = mock_generate
 
     response = agent.run("Tell me about AI")
     assert response == "I got the information"
-    assert mock_llm.generate_call_count == 2
+    assert call_count["value"] == 2
 
 
 def test_agent_reset():
@@ -128,8 +139,8 @@ def test_agent_reset():
     agent.run("Hello")
     agent.run("How are you?")
 
-    # Should have system + 2 messages
-    assert len(agent.memory.messages) == 3
+    # Should have system + 2 user messages + 2 assistant responses = 5 messages
+    assert len(agent.memory.messages) == 5
 
     # Reset should keep system message
     agent.reset()

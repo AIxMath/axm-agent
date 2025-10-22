@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 from pydantic import BaseModel
 
 from axm.core.agent import Agent
-from axm.core.types import Plan, Task
+from axm.core.types import Plan, Task, Message
 
 
 class PlanningAgent(Agent):
@@ -42,7 +42,7 @@ Return a JSON object with a 'tasks' array."""
         # Temporarily override system prompt
         original_messages = self.memory.messages.copy()
         self.reset()
-        self.memory.add_message({"role": "system", "content": system_prompt})
+        self.memory.add_message(Message(role="system", content=system_prompt))
 
         prompt = f"Create a step-by-step plan to accomplish this goal: {goal}"
 
@@ -52,7 +52,7 @@ Return a JSON object with a 'tasks' array."""
         self.memory.messages = original_messages
 
         # Create Task objects
-        tasks = []
+        tasks: List[Task] = []
         if isinstance(plan_data, PlanSchema):
             for task_dict in plan_data.tasks:
                 tasks.append(
@@ -75,7 +75,7 @@ Return a JSON object with a 'tasks' array."""
             )
             task.status = "completed"
             task.result = result
-            return result
+            return result  # type: ignore[return-value]
         except Exception as e:
             task.status = "failed"
             task.error = str(e)

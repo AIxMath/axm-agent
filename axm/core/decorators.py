@@ -12,7 +12,7 @@ def _create_pydantic_model(func: Callable) -> Type[BaseModel]:
     sig = inspect.signature(func)
     hints = get_type_hints(func)
 
-    fields = {}
+    fields: dict[str, Any] = {}
     for param_name, param in sig.parameters.items():
         if param_name == "self":
             continue
@@ -28,7 +28,7 @@ def _create_pydantic_model(func: Callable) -> Type[BaseModel]:
     model = create_model(
         f"{func.__name__}_model",
         __doc__=docstring,
-        **fields,
+        **fields,  # type: ignore[arg-type]
     )
     return model
 

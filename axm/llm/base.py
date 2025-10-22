@@ -49,7 +49,7 @@ class LLMProvider(ABC):
         pass
 
     @abstractmethod
-    async def astream(
+    def astream(
         self,
         messages: List[Message],
         temperature: float = 0.7,
@@ -57,4 +57,7 @@ class LLMProvider(ABC):
         **kwargs: Any,
     ) -> AsyncIterator[str]:
         """Async stream response chunks from the LLM"""
+        # This should be implemented as an async generator
+        # async def astream(...) -> AsyncIterator[str]:
+        #     yield chunk
         pass

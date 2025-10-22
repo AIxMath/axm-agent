@@ -35,22 +35,26 @@ class AnthropicProvider(LLMProvider):
                 if msg.tool_calls:
                     # Add tool use blocks
                     for tool_call in msg.tool_calls:
-                        content.append({
-                            "type": "tool_use",
-                            "id": tool_call["id"],
-                            "name": tool_call["function"]["name"],
-                            "input": json.loads(tool_call["function"]["arguments"]),
-                        })
+                        content.append(
+                            {
+                                "type": "tool_use",
+                                "id": tool_call["id"],
+                                "name": tool_call["function"]["name"],
+                                "input": json.loads(tool_call["function"]["arguments"]),
+                            }
+                        )
                 result.append({"role": "assistant", "content": content})
             elif msg.role == "user":
                 content = [{"type": "text", "text": msg.content}]
                 if msg.tool_call_id:
                     # This is a tool result
-                    content = [{
-                        "type": "tool_result",
-                        "tool_use_id": msg.tool_call_id,
-                        "content": msg.content,
-                    }]
+                    content = [
+                        {
+                            "type": "tool_result",
+                            "tool_use_id": msg.tool_call_id,
+                            "content": msg.content,
+                        }
+                    ]
                 result.append({"role": "user", "content": content})
         return result
 
@@ -89,19 +93,23 @@ class AnthropicProvider(LLMProvider):
             # Convert tools to Anthropic format
             anthropic_tools = []
             for tool in tools:
-                anthropic_tools.append({
-                    "name": tool["function"]["name"],
-                    "description": tool["function"]["description"],
-                    "input_schema": tool["function"]["parameters"],
-                })
+                anthropic_tools.append(
+                    {
+                        "name": tool["function"]["name"],
+                        "description": tool["function"]["description"],
+                        "input_schema": tool["function"]["parameters"],
+                    }
+                )
             params["tools"] = anthropic_tools
 
         if response_format:
             # Add instruction for JSON output
+            schema = response_format.model_json_schema()
+            schema_msg = f"\n\nYou must respond with valid JSON matching this schema: {schema}"
             if system_content:
-                params["system"] += f"\n\nYou must respond with valid JSON matching this schema: {response_format.model_json_schema()}"
+                params["system"] += schema_msg
             else:
-                params["system"] = f"You must respond with valid JSON matching this schema: {response_format.model_json_schema()}"
+                params["system"] = schema_msg.strip()
 
         response = self.client.messages.create(**params)
 
@@ -114,14 +122,16 @@ class AnthropicProvider(LLMProvider):
             elif block.type == "tool_use":
                 if tool_calls is None:
                     tool_calls = []
-                tool_calls.append({
-                    "id": block.id,
-                    "type": "function",
-                    "function": {
-                        "name": block.name,
-                        "arguments": json.dumps(block.input),
-                    },
-                })
+                tool_calls.append(
+                    {
+                        "id": block.id,
+                        "type": "function",
+                        "function": {
+                            "name": block.name,
+                            "arguments": json.dumps(block.input),
+                        },
+                    }
+                )
 
         return Message(
             role="assistant",
@@ -163,18 +173,24 @@ class AnthropicProvider(LLMProvider):
         if tools:
             anthropic_tools = []
             for tool in tools:
-                anthropic_tools.append({
-                    "name": tool["function"]["name"],
-                    "description": tool["function"]["description"],
-                    "input_schema": tool["function"]["parameters"],
-                })
+                anthropic_tools.append(
+                    {
+                        "name": tool["function"]["name"],
+                        "description": tool["function"]["description"],
+                        "input_schema": tool["function"]["parameters"],
+                    }
+                )
             params["tools"] = anthropic_tools
 
         if response_format:
             if system_content:
-                params["system"] += f"\n\nYou must respond with valid JSON matching this schema: {response_format.model_json_schema()}"
+                params[
+                    "system"
+                ] += f"\n\nYou must respond with valid JSON matching this schema: {response_format.model_json_schema()}"
             else:
-                params["system"] = f"You must respond with valid JSON matching this schema: {response_format.model_json_schema()}"
+                params["system"] = (
+                    f"You must respond with valid JSON matching this schema: {response_format.model_json_schema()}"
+                )
 
         response = await self.async_client.messages.create(**params)
 
@@ -187,14 +203,16 @@ class AnthropicProvider(LLMProvider):
             elif block.type == "tool_use":
                 if tool_calls is None:
                     tool_calls = []
-                tool_calls.append({
-                    "id": block.id,
-                    "type": "function",
-                    "function": {
-                        "name": block.name,
-                        "arguments": json.dumps(block.input),
-                    },
-                })
+                tool_calls.append(
+                    {
+                        "id": block.id,
+                        "type": "function",
+                        "function": {
+                            "name": block.name,
+                            "arguments": json.dumps(block.input),
+                        },
+                    }
+                )
 
         return Message(
             role="assistant",

@@ -35,15 +35,15 @@ if __name__ == "__main__":
 
     # Example 1: Using weather tool
     response = agent.run("What's the weather like in Paris?")
-    print(f"User: What's the weather like in Paris?")
+    print("User: What's the weather like in Paris?")
     print(f"Agent: {response}\n")
 
     # Example 2: Using calculator tool
     response = agent.run("What is 25 * 4 + 10?")
-    print(f"User: What is 25 * 4 + 10?")
+    print("User: What is 25 * 4 + 10?")
     print(f"Agent: {response}\n")
 
     # Example 3: Multiple tools in one query
     response = agent.run("What's the weather in Tokyo and what is 100 / 5?")
-    print(f"User: What's the weather in Tokyo and what is 100 / 5?")
+    print("User: What's the weather in Tokyo and what is 100 / 5?")
     print(f"Agent: {response}")

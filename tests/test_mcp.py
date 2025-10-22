@@ -1,6 +1,5 @@
 """Tests for MCP Server"""
 
-import pytest
 from axm.mcp import MCPServer
 
 

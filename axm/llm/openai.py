@@ -1,6 +1,5 @@
 """OpenAI LLM provider"""
 
-import json
 from typing import Any, AsyncIterator, Dict, Iterator, List, Optional, Type
 
 from pydantic import BaseModel
@@ -13,7 +12,7 @@ except ImportError:
         "Install it with: pip install axm-agent[openai]"
     )
 
-from axm.core.types import Message, ToolCall
+from axm.core.types import Message
 from axm.llm.base import LLMProvider
 
 
@@ -71,7 +70,10 @@ class OpenAIProvider(LLMProvider):
             params["response_format"] = {"type": "json_object"}
             # Add instruction to return JSON
             if openai_messages:
-                openai_messages[-1]["content"] += f"\n\nReturn a JSON object matching this schema: {response_format.model_json_schema()}"
+                schema = response_format.model_json_schema()
+                openai_messages[-1][
+                    "content"
+                ] += f"\n\nReturn a JSON object matching this schema: {schema}"
 
         response = self.client.chat.completions.create(**params)
         choice = response.choices[0]
@@ -126,7 +128,9 @@ class OpenAIProvider(LLMProvider):
         if response_format:
             params["response_format"] = {"type": "json_object"}
             if openai_messages:
-                openai_messages[-1]["content"] += f"\n\nReturn a JSON object matching this schema: {response_format.model_json_schema()}"
+                openai_messages[-1][
+                    "content"
+                ] += f"\n\nReturn a JSON object matching this schema: {response_format.model_json_schema()}"
 
         response = await self.async_client.chat.completions.create(**params)
         choice = response.choices[0]

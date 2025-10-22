@@ -1,9 +1,8 @@
 """Multi-Agent system for collaboration"""
 
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 from axm.core.agent import Agent
-from axm.core.types import Message
 
 
 class MultiAgent:
@@ -44,9 +43,7 @@ Your job is to:
 
 For each subtask, specify which agent should handle it and what they should do."""
 
-    def collaborate(
-        self, task: str, max_rounds: int = 3, verbose: bool = True
-    ) -> str:
+    def collaborate(self, task: str, max_rounds: int = 3, verbose: bool = True) -> str:
         """
         Have agents collaborate on a task.
 
@@ -86,7 +83,7 @@ Otherwise, format as: ASSIGN <agent_role>: <instruction>"""
             if orchestrator_response.startswith("FINAL:"):
                 final_answer = orchestrator_response[6:].strip()
                 if verbose:
-                    print(f"✅ Final result achieved!\n")
+                    print("✅ Final result achieved!\n")
                 return final_answer
 
             # Parse agent assignments
@@ -110,7 +107,7 @@ Otherwise, format as: ASSIGN <agent_role>: <instruction>"""
 
         # If we exhausted rounds, ask orchestrator for final synthesis
         if verbose:
-            print(f"⏱️  Max rounds reached, synthesizing final answer...\n")
+            print("⏱️  Max rounds reached, synthesizing final answer...\n")
 
         final_prompt = f"""Task: {task}
 

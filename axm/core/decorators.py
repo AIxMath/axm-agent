@@ -33,7 +33,12 @@ def _create_pydantic_model(func: Callable) -> Type[BaseModel]:
     return model
 
 
-def tool(func: Optional[Callable] = None, *, name: Optional[str] = None, description: Optional[str] = None):
+def tool(
+    func: Optional[Callable] = None,
+    *,
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+):
     """
     Decorator to mark a function as a tool that can be used by an agent.
 

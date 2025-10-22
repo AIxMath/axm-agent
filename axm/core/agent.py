@@ -1,6 +1,5 @@
 """Core Agent implementation"""
 
-import inspect
 import json
 from typing import Any, AsyncIterator, Callable, Dict, Iterator, List, Optional, Type, Union
 
@@ -9,7 +8,6 @@ from pydantic import BaseModel
 from axm.core.types import AgentConfig, Message
 from axm.core.decorators import tool as tool_decorator
 from axm.llm.base import LLMProvider
-from axm.llm.openai import OpenAIProvider
 from axm.memory.conversation import ConversationMemory
 from axm.tools.base import FunctionTool, Tool
 
@@ -72,12 +70,17 @@ class Agent:
         elif isinstance(model, str):
             # Auto-detect provider based on model name
             if model.startswith("gpt") or model.startswith("o1"):
+                from axm.llm.openai import OpenAIProvider
+
                 self.llm = OpenAIProvider(api_key=api_key)
             elif model.startswith("claude"):
                 from axm.llm.anthropic import AnthropicProvider
+
                 self.llm = AnthropicProvider(api_key=api_key)
             else:
                 # Default to OpenAI
+                from axm.llm.openai import OpenAIProvider
+
                 self.llm = OpenAIProvider(api_key=api_key)
         else:
             raise ValueError("model must be a string or LLMProvider instance")
@@ -105,7 +108,11 @@ class Agent:
                 self.tools[tool.name] = tool
 
     def tool(
-        self, func: Optional[Callable] = None, *, name: Optional[str] = None, description: Optional[str] = None
+        self,
+        func: Optional[Callable] = None,
+        *,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
     ) -> Callable:
         """
         Decorator to register a function as a tool.
@@ -243,7 +250,9 @@ class Agent:
                         json_data = json.loads(response.content)
                         return response_format(**json_data)
                     except (json.JSONDecodeError, ValueError) as e:
-                        raise ValueError(f"Failed to parse response as {response_format.__name__}: {e}")
+                        raise ValueError(
+                            f"Failed to parse response as {response_format.__name__}: {e}"
+                        )
                 else:
                     return response.content
 
@@ -313,7 +322,9 @@ class Agent:
                         json_data = json.loads(response.content)
                         return response_format(**json_data)
                     except (json.JSONDecodeError, ValueError) as e:
-                        raise ValueError(f"Failed to parse response as {response_format.__name__}: {e}")
+                        raise ValueError(
+                            f"Failed to parse response as {response_format.__name__}: {e}"
+                        )
                 else:
                     return response.content
 

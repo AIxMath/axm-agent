@@ -64,22 +64,22 @@ async def concurrent_example():
 
 
 if __name__ == "__main__":
-    print("="*60)
+    print("=" * 60)
 
     # Run sync streaming first
     sync_streaming_example()
 
-    print("="*60)
+    print("=" * 60)
 
     # Run async examples
     asyncio.run(async_example())
 
-    print("="*60)
+    print("=" * 60)
 
     asyncio.run(streaming_example())
 
-    print("="*60)
+    print("=" * 60)
 
     asyncio.run(concurrent_example())
 
-    print("="*60)
+    print("=" * 60)

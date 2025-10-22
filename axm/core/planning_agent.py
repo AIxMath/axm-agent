@@ -1,7 +1,6 @@
 """Planning Agent for task decomposition and execution"""
 
-import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from pydantic import BaseModel
 
@@ -43,9 +42,7 @@ Return a JSON object with a 'tasks' array."""
         # Temporarily override system prompt
         original_messages = self.memory.messages.copy()
         self.reset()
-        self.memory.add_message(
-            {"role": "system", "content": system_prompt}
-        )
+        self.memory.add_message({"role": "system", "content": system_prompt})
 
         prompt = f"Create a step-by-step plan to accomplish this goal: {goal}"
 
@@ -132,7 +129,12 @@ Return a JSON object with a 'tasks' array."""
 
                         if verbose:
                             print(f"✅ Completed: {task.description}")
-                            print(f"   Result: {result[:100]}...\n" if len(result) > 100 else f"   Result: {result}\n")
+                            result_preview = (
+                                f"   Result: {result[:100]}...\n"
+                                if len(result) > 100
+                                else f"   Result: {result}\n"
+                            )
+                            print(result_preview)
                     except Exception as e:
                         if verbose:
                             print(f"❌ Failed: {task.description}")

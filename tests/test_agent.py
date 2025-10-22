@@ -1,9 +1,6 @@
 """Tests for the core Agent functionality"""
 
-import pytest
-from unittest.mock import MagicMock, patch
-
-from axm import Agent, tool
+from axm import Agent
 from axm.core.types import Message
 from axm.llm.base import LLMProvider
 
@@ -107,12 +104,9 @@ def test_agent_with_tool_execution():
                     {
                         "id": "call_1",
                         "type": "function",
-                        "function": {
-                            "name": "get_info",
-                            "arguments": '{"topic": "AI"}'
-                        }
+                        "function": {"name": "get_info", "arguments": '{"topic": "AI"}'},
                     }
-                ]
+                ],
             )
         else:
             # Second call - return final response

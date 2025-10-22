@@ -49,25 +49,29 @@ if __name__ == "__main__":
     print()
 
     # Use the agent with MCP tools
-    print("="*60)
+    print("=" * 60)
     print("\nExample 1: Using time tool\n")
     response = agent.run("What time is it right now?")
-    print(f"User: What time is it right now?")
+    print("User: What time is it right now?")
     print(f"Agent: {response}\n")
 
-    print("="*60)
+    print("=" * 60)
     print("\nExample 2: Using string manipulation tools\n")
     response = agent.run("Reverse the string 'Hello World' and convert it to uppercase")
-    print(f"User: Reverse the string 'Hello World' and convert it to uppercase")
+    print("User: Reverse the string 'Hello World' and convert it to uppercase")
     print(f"Agent: {response}\n")
 
-    print("="*60)
+    print("=" * 60)
     print("\nExample 3: Count words\n")
-    response = agent.run("How many words are in this sentence: 'The quick brown fox jumps over the lazy dog'")
-    print(f"User: How many words are in this sentence: 'The quick brown fox jumps over the lazy dog'")
+    response = agent.run(
+        "How many words are in this sentence: 'The quick brown fox jumps over the lazy dog'"
+    )
+    print(
+        "User: How many words are in this sentence: 'The quick brown fox jumps over the lazy dog'"
+    )
     print(f"Agent: {response}\n")
 
-    print("="*60)
+    print("=" * 60)
     print("\nMCP Server Information:")
     server_info = mcp.to_dict()
     print(f"Name: {server_info['name']}")

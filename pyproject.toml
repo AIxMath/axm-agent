@@ -61,10 +61,10 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/axm-agent"
-Documentation = "https://github.com/yourusername/axm-agent#readme"
-Repository = "https://github.com/yourusername/axm-agent"
-Issues = "https://github.com/yourusername/axm-agent/issues"
+Homepage = "https://github.com/AIxMath/axm-agent"
+Documentation = "https://github.com/AIxMath/axm-agent#readme"
+Repository = "https://github.com/AIxMath/axm-agent"
+Issues = "https://github.com/AIxMath/axm-agent/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

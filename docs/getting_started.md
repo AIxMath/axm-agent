@@ -259,7 +259,7 @@ Check out the `examples/` directory for complete examples:
 
 - Read the [API Documentation](docs/api.md)
 - Check out [Advanced Usage](docs/advanced.md)
-- Join our [Community](https://github.com/yourusername/axm-agent/discussions)
+- Join our [Community](https://github.com/AIxMath/axm-agent/discussions)
 
 ## Tips
 
@@ -301,6 +301,6 @@ Ensure:
 
 ## Getting Help
 
-- GitHub Issues: [Report bugs](https://github.com/yourusername/axm-agent/issues)
-- Discussions: [Ask questions](https://github.com/yourusername/axm-agent/discussions)
+- GitHub Issues: [Report bugs](https://github.com/AIxMath/axm-agent/issues)
+- Discussions: [Ask questions](https://github.com/AIxMath/axm-agent/discussions)
 - Documentation: [Full docs](docs/)

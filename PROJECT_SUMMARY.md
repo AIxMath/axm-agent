@@ -279,9 +279,9 @@ But designed for **simplicity and developer happiness**.
 
 ## 📮 Contact
 
-- GitHub: https://github.com/yourusername/axm-agent
-- Issues: https://github.com/yourusername/axm-agent/issues
-- Discussions: https://github.com/yourusername/axm-agent/discussions
+- GitHub: https://github.com/AIxMath/axm-agent
+- Issues: https://github.com/AIxMath/axm-agent/issues
+- Discussions: https://github.com/AIxMath/axm-agent/discussions
 
 ---
 

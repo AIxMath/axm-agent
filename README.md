@@ -242,8 +242,8 @@ Inspired by the best ideas from LangChain, CrewAI, and AutoGen, but designed for
 
 ## 📖 Documentation
 
-For full documentation, visit [our docs](https://github.com/yourusername/axm-agent/docs)
+For full documentation, visit [our docs](https://github.com/AIxMath/axm-agent/docs)
 
 ## 🐛 Issues
 
-Found a bug? Please [open an issue](https://github.com/yourusername/axm-agent/issues)
+Found a bug? Please [open an issue](https://github.com/AIxMath/axm-agent/issues)

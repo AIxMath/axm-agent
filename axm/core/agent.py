@@ -38,6 +38,7 @@ class Agent:
         memory: Optional[ConversationMemory] = None,
         mcp_server: Optional[Any] = None,
         api_key: Optional[str] = None,
+        base_url: Optional[str] = None,
     ):
         """
         Initialize an Agent.
@@ -53,6 +54,7 @@ class Agent:
             memory: Conversation memory instance
             mcp_server: MCP server for tool integration
             api_key: API key for the LLM provider
+            base_url: Base URL for the LLM provider API
         """
         self.config = AgentConfig(
             model=model if isinstance(model, str) else "custom",
@@ -72,16 +74,16 @@ class Agent:
             if model.startswith("gpt") or model.startswith("o1"):
                 from axm.llm.openai import OpenAIProvider
 
-                self.llm = OpenAIProvider(api_key=api_key)
+                self.llm = OpenAIProvider(api_key=api_key, base_url=base_url)
             elif model.startswith("claude"):
                 from axm.llm.anthropic import AnthropicProvider
 
-                self.llm = AnthropicProvider(api_key=api_key)
+                self.llm = AnthropicProvider(api_key=api_key, base_url=base_url)
             else:
                 # Default to OpenAI
                 from axm.llm.openai import OpenAIProvider
 
-                self.llm = OpenAIProvider(api_key=api_key)
+                self.llm = OpenAIProvider(api_key=api_key, base_url=base_url)
         else:
             raise ValueError("model must be a string or LLMProvider instance")
 

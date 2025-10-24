@@ -41,7 +41,10 @@ def test_anthropic_base_url():
 def test_default_base_url():
     """Test that agents work without base_url (use default)"""
     # This should not raise an error
-    Agent(model="gpt-4", api_key="test-key")
+    try:
+        Agent(model="gpt-4", api_key="test-key")
+    except ImportError:
+        pass  # Skip if openai not installed
 
     try:
         Agent(model="claude-3-5-sonnet-20241022", api_key="test-key")

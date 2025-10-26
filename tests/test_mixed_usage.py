@@ -8,7 +8,6 @@ Set environment variables:
 Then run: python qq.py
 """
 
-import os
 from axm.core.agent import Agent
 from axm.core.planning_agent import PlanningAgent
 from axm.core.multi_agent import MultiAgent
@@ -16,6 +15,7 @@ from axm.llm.openai_compatible import OpenAICompatibleProvider
 
 # Configuration
 MODEL = "deepseek-v3-250324"
+
 
 def demo_basic_agent():
     """Demo 1: Basic agent usage"""
@@ -112,10 +112,7 @@ def demo_multi_agent():
     researcher = Agent(model=MODEL, role="researcher")
     writer = Agent(model=MODEL, role="writer")
 
-    team = MultiAgent(
-        [researcher, writer],
-        orchestrator_model=MODEL
-    )
+    team = MultiAgent([researcher, writer], orchestrator_model=MODEL)
 
     result = team.collaborate(
         "Create a brief explanation of quantum computing for beginners", max_rounds=2, verbose=True

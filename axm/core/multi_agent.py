@@ -16,18 +16,28 @@ class MultiAgent:
         result = team.collaborate("Write an article about AI")
     """
 
-    def __init__(self, agents: List[Agent], orchestrator_model: str = "gpt-4"):
+    def __init__(
+        self,
+        agents: List[Agent],
+        orchestrator_model: str = "gpt-4",
+        api_key: Optional[str] = None,
+        base_url: Optional[str] = None,
+    ):
         """
         Initialize a multi-agent system.
 
         Args:
             agents: List of agents to collaborate
             orchestrator_model: Model for the orchestrator
+            api_key: API key for the orchestrator agent
+            base_url: Base URL for the orchestrator agent
         """
         self.agents = {agent.config.role or f"agent_{i}": agent for i, agent in enumerate(agents)}
         self.orchestrator = Agent(
             orchestrator_model,
             system_prompt=self._create_orchestrator_prompt(),
+            api_key=api_key,
+            base_url=base_url,
         )
 
     def _create_orchestrator_prompt(self) -> str:

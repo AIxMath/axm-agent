@@ -45,7 +45,9 @@ class OpenAICompatibleProvider(LLMProvider):
     """OpenAI-compatible LLM provider using requests library
 
     Works with any API that follows the OpenAI chat completions format.
-    Automatically reads OPENAI_API_KEY and OPENAI_BASE_URL from environment.
+    Automatically reads environment variables in this order:
+    - API Key: OPENAI_COMPATIBLE_API_KEY -> OPENAI_API_KEY
+    - Base URL: OPENAI_COMPATIBLE_BASE_URL -> OPENAI_BASE_URL -> https://api.openai.com/v1
     """
 
     def __init__(
@@ -58,12 +60,23 @@ class OpenAICompatibleProvider(LLMProvider):
         Initialize the OpenAI-compatible provider.
 
         Args:
-            api_key: API key for authentication (default: $OPENAI_API_KEY)
-            base_url: Base URL for the API (default: $OPENAI_BASE_URL or https://api.openai.com/v1)
+            api_key: API key for authentication (default: $OPENAI_COMPATIBLE_API_KEY, then $OPENAI_API_KEY)
+            base_url: Base URL for the API (default: $OPENAI_COMPATIBLE_BASE_URL, then $OPENAI_BASE_URL, then https://api.openai.com/v1)
             timeout: Request timeout in seconds
         """
-        self.api_key = api_key or os.environ.get("OPENAI_API_KEY", "")
-        default_base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+        # Try OPENAI_COMPATIBLE_API_KEY first, fall back to OPENAI_API_KEY
+        self.api_key = (
+            api_key
+            or os.environ.get("OPENAI_COMPATIBLE_API_KEY")
+            or os.environ.get("OPENAI_API_KEY", "")
+        )
+
+        # Try OPENAI_COMPATIBLE_BASE_URL first, then OPENAI_BASE_URL, finally default
+        default_base_url = (
+            os.environ.get("OPENAI_COMPATIBLE_BASE_URL")
+            or os.environ.get("OPENAI_BASE_URL")
+            or "https://api.openai.com/v1"
+        )
         self.base_url = (base_url or default_base_url).rstrip("/")
         self.timeout = timeout
 

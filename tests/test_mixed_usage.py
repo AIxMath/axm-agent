@@ -1,9 +1,11 @@
 """
 Quick Start Script - Get up and running with AXM Agent in seconds!
 
-Run this script to see AXM Agent in action.
-Set your OPENAI_COMPATIBLE_BASE_URL and OPENAI_COMPATIBLE_API_KEY environment variables.
-Or use OPENAI_BASE_URL and OPENAI_API_KEY as fallback.
+Set environment variables:
+  export AXM_OPENAI_COMPATIBLE_BASE_URL="https://ark.cn-beijing.volces.com/api/v3"
+  export AXM_OPENAI_COMPATIBLE_API_KEY="your-api-key"
+
+Then run: python qq.py
 """
 
 import os
@@ -12,12 +14,8 @@ from axm.core.planning_agent import PlanningAgent
 from axm.core.multi_agent import MultiAgent
 from axm.llm.openai_compatible import OpenAICompatibleProvider
 
+# Configuration
 MODEL = "deepseek-v3-250324"
-# Note: The base_url should end with /v1 (or similar version endpoint)
-# not include /chat/completions - that's added automatically by the provider
-BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
-API_KEY = os.environ.get("OPENAI_API_KEY", "test-key-please-set-env-var")
-
 
 def demo_basic_agent():
     """Demo 1: Basic agent usage"""
@@ -25,7 +23,7 @@ def demo_basic_agent():
     print("DEMO 1: Basic Agent")
     print("=" * 60 + "\n")
 
-    agent = Agent(model=MODEL, base_url=BASE_URL, api_key=API_KEY)
+    agent = Agent(model=MODEL)
 
     assert isinstance(agent.llm, OpenAICompatibleProvider)
 
@@ -41,7 +39,7 @@ def demo_agent_with_tools():
     print("DEMO 2: Agent with Custom Tools")
     print("=" * 60 + "\n")
 
-    agent = Agent(model=MODEL, base_url=BASE_URL, api_key=API_KEY)
+    agent = Agent(model=MODEL)
 
     @agent.tool
     def get_user_info(user_id: int) -> dict:
@@ -78,7 +76,7 @@ def demo_structured_output():
         rating: float
         why_recommended: str
 
-    agent = Agent(model=MODEL, base_url=BASE_URL, api_key=API_KEY)
+    agent = Agent(model=MODEL)
     movie = agent.run(
         "Recommend a sci-fi movie for someone who loves AI themes",
         response_format=MovieRecommendation,
@@ -97,7 +95,7 @@ def demo_planning_agent():
     print("DEMO 4: Planning Agent")
     print("=" * 60 + "\n")
 
-    agent = PlanningAgent(model=MODEL, base_url=BASE_URL, api_key=API_KEY)
+    agent = PlanningAgent(model=MODEL)
 
     agent.execute_plan(
         "Research the benefits of Python for data science and create a summary",
@@ -111,14 +109,12 @@ def demo_multi_agent():
     print("DEMO 5: Multi-Agent Collaboration")
     print("=" * 60 + "\n")
 
-    researcher = Agent(model=MODEL, role="researcher", base_url=BASE_URL, api_key=API_KEY)
-    writer = Agent(model=MODEL, role="writer", base_url=BASE_URL, api_key=API_KEY)
+    researcher = Agent(model=MODEL, role="researcher")
+    writer = Agent(model=MODEL, role="writer")
 
     team = MultiAgent(
         [researcher, writer],
-        orchestrator_model=MODEL,
-        base_url=BASE_URL,
-        api_key=API_KEY,
+        orchestrator_model=MODEL
     )
 
     result = team.collaborate(

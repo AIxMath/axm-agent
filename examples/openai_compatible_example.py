@@ -3,22 +3,24 @@
 This provider works with any API that follows the OpenAI chat completions format,
 including local LLM servers, custom proxies, or alternative cloud providers.
 
-Environment Variable Priority:
-1. Direct parameters (api_key, base_url) - highest priority
-2. OPENAI_COMPATIBLE_API_KEY and OPENAI_COMPATIBLE_BASE_URL
-3. OPENAI_API_KEY and OPENAI_BASE_URL - fallback
-4. Default: https://api.openai.com/v1
+Environment Variables:
+- AXM_OPENAI_COMPATIBLE_API_KEY: API key for authentication
+- AXM_OPENAI_COMPATIBLE_BASE_URL: Base URL for the API endpoint
+
+Examples:
+  export AXM_OPENAI_COMPATIBLE_BASE_URL="https://your-endpoint.com/v1"
+  export AXM_OPENAI_COMPATIBLE_API_KEY="your-api-key"
 """
 
 from axm.core.agent import Agent
 from axm.core.multi_agent import MultiAgent
 from axm.llm.openai_compatible import OpenAICompatibleProvider
 
-# Example 1: Use OPENAI_COMPATIBLE_* environment variables (RECOMMENDED)
+# Example 1: Use environment variables (RECOMMENDED)
 # Set these in your shell or .env file:
-# export OPENAI_COMPATIBLE_BASE_URL="https://your-endpoint.com/v1"
-# export OPENAI_COMPATIBLE_API_KEY="your-api-key"
-print("=== Example 1: Using OPENAI_COMPATIBLE_* environment variables ===")
+# export AXM_OPENAI_COMPATIBLE_BASE_URL="https://your-endpoint.com/v1"
+# export AXM_OPENAI_COMPATIBLE_API_KEY="your-api-key"
+print("=== Example 1: Using environment variables ===")
 provider_env = OpenAICompatibleProvider()
 print(f"Base URL from env: {provider_env.base_url}")
 print()

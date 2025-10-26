@@ -61,6 +61,31 @@ For all providers:
 pip install axm-agent[all]
 ```
 
+## 🔑 Configuration
+
+AXM Agent uses environment variables for API credentials:
+
+### OpenAI
+```bash
+export AXM_OPENAI_API_KEY="sk-..."
+```
+
+### Anthropic (Claude)
+```bash
+export AXM_ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+### OpenAI-Compatible Providers (DeepSeek, local LLMs, etc.)
+```bash
+export AXM_OPENAI_COMPATIBLE_API_KEY="your-api-key"
+export AXM_OPENAI_COMPATIBLE_BASE_URL="https://your-endpoint.com/v1"
+```
+
+You can also pass credentials directly when creating agents:
+```python
+agent = Agent("gpt-4", api_key="sk-...", base_url="https://custom-endpoint.com/v1")
+```
+
 ## 🎓 Quick Start
 
 ### Basic Agent

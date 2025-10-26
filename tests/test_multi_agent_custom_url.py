@@ -7,7 +7,7 @@ from axm.llm.openai_compatible import OpenAICompatibleProvider
 
 MODEL = "deepseek-v3-250324"
 BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
-API_KEY = os.environ.get("OPENAI_API_KEY", "test-key")
+API_KEY = os.environ.get("AXM_OPENAI_COMPATIBLE_API_KEY", "test-key")
 
 
 def test_multi_agent_with_custom_url():
@@ -17,9 +17,7 @@ def test_multi_agent_with_custom_url():
     print("=" * 60 + "\n")
 
     # Create agents with custom base_url
-    researcher = Agent(
-        model=MODEL, role="researcher", base_url=BASE_URL, api_key=API_KEY
-    )
+    researcher = Agent(model=MODEL, role="researcher", base_url=BASE_URL, api_key=API_KEY)
     writer = Agent(model=MODEL, role="writer", base_url=BASE_URL, api_key=API_KEY)
 
     # Verify agents are using OpenAICompatibleProvider
@@ -55,14 +53,14 @@ def test_multi_agent_with_custom_url():
 
 
 def test_environment_variables():
-    """Test that OPENAI_COMPATIBLE_* environment variables work"""
+    """Test that AXM_OPENAI_COMPATIBLE_* environment variables work"""
     print("\n" + "=" * 60)
-    print("TEST: Environment Variables Priority")
+    print("TEST: Environment Variables")
     print("=" * 60 + "\n")
 
     # Set environment variables
-    os.environ["OPENAI_COMPATIBLE_BASE_URL"] = BASE_URL
-    os.environ["OPENAI_COMPATIBLE_API_KEY"] = API_KEY
+    os.environ["AXM_OPENAI_COMPATIBLE_BASE_URL"] = BASE_URL
+    os.environ["AXM_OPENAI_COMPATIBLE_API_KEY"] = API_KEY
 
     # Create provider without explicit parameters
     provider = OpenAICompatibleProvider()
@@ -70,14 +68,14 @@ def test_environment_variables():
     # Verify environment variables were used
     assert provider.base_url == BASE_URL
     assert provider.api_key == API_KEY
-    print(f"✅ Provider used OPENAI_COMPATIBLE_BASE_URL: {BASE_URL}")
-    print(f"✅ Provider used OPENAI_COMPATIBLE_API_KEY: {API_KEY[:10]}...")
+    print(f"✅ Provider used AXM_OPENAI_COMPATIBLE_BASE_URL: {BASE_URL}")
+    print(f"✅ Provider used AXM_OPENAI_COMPATIBLE_API_KEY: {API_KEY[:10]}...")
 
     # Create agent without explicit parameters
     agent = Agent(model=MODEL)
     assert isinstance(agent.llm, OpenAICompatibleProvider)
     assert agent.llm.base_url == BASE_URL
-    print(f"✅ Agent used environment variables correctly")
+    print("✅ Agent used environment variables correctly")
 
     print("\n✅ All environment variable tests passed!")
 

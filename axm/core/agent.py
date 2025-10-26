@@ -80,10 +80,10 @@ class Agent:
 
                 self.llm = AnthropicProvider(api_key=api_key, base_url=base_url)
             else:
-                # Default to OpenAI
-                from axm.llm.openai import OpenAIProvider
+                # Default to OpenAI-compatible provider (uses requests library)
+                from axm.llm.openai_compatible import OpenAICompatibleProvider
 
-                self.llm = OpenAIProvider(api_key=api_key, base_url=base_url)
+                self.llm = OpenAICompatibleProvider(api_key=api_key, base_url=base_url)
         else:
             raise ValueError("model must be a string or LLMProvider instance")
 

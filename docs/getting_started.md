@@ -21,25 +21,50 @@ pip install axm-agent[anthropic]
 pip install axm-agent[all]
 ```
 
-## Basic Setup
+## Configuration
 
-### 1. Set up your API keys
+### Environment Variables
 
-Create a `.env` file in your project root:
+AXM Agent uses dedicated environment variables for each provider:
 
+**OpenAI:**
 ```bash
-OPENAI_API_KEY=your_openai_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
+export AXM_OPENAI_API_KEY="sk-..."
 ```
 
-Or set them in your code:
+**Anthropic (Claude):**
+```bash
+export AXM_ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+**OpenAI-Compatible Providers (DeepSeek, Groq, local LLMs, etc.):**
+```bash
+export AXM_OPENAI_COMPATIBLE_API_KEY="your-api-key"
+export AXM_OPENAI_COMPATIBLE_BASE_URL="https://your-endpoint.com/v1"
+```
+
+### Passing Credentials Directly
+
+You can also pass credentials directly when creating agents:
 
 ```python
-import os
-os.environ["OPENAI_API_KEY"] = "your_key_here"
+from axm import Agent
+
+# OpenAI
+agent = Agent("gpt-4", api_key="sk-...")
+
+# OpenAI-compatible endpoint
+agent = Agent(
+    "deepseek-v3",
+    api_key="your-api-key",
+    base_url="https://ark.cn-beijing.volces.com/api/v3"
+)
+
+# Anthropic
+agent = Agent("claude-3-opus-20240229", api_key="sk-ant-...")
 ```
 
-### 2. Create your first agent
+## Basic Setup
 
 ```python
 from axm import Agent
@@ -276,7 +301,9 @@ Check out the `examples/` directory for complete examples:
 ```python
 # Check if key is set
 import os
-print(os.getenv("OPENAI_API_KEY"))
+print(os.getenv("AXM_OPENAI_API_KEY"))
+print(os.getenv("AXM_ANTHROPIC_API_KEY"))
+print(os.getenv("AXM_OPENAI_COMPATIBLE_API_KEY"))
 
 # Or pass directly
 agent = Agent("gpt-4", api_key="your-key")

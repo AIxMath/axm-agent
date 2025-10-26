@@ -1,5 +1,6 @@
 """OpenAI LLM provider"""
 
+import os
 from typing import Any, AsyncIterator, Dict, Iterator, List, Optional, Type
 
 from pydantic import BaseModel
@@ -17,9 +18,20 @@ from axm.llm.base import LLMProvider
 
 
 class OpenAIProvider(LLMProvider):
-    """OpenAI LLM provider (GPT-4, GPT-3.5, etc.)"""
+    """OpenAI LLM provider (GPT-4, GPT-3.5, etc.)
+
+    Reads AXM_OPENAI_API_KEY from environment if api_key not provided.
+    """
 
     def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None):
+        """
+        Initialize OpenAI provider.
+
+        Args:
+            api_key: OpenAI API key (default: $AXM_OPENAI_API_KEY)
+            base_url: Optional base URL for API
+        """
+        api_key = api_key or os.environ.get("AXM_OPENAI_API_KEY")
         self.client = OpenAI(api_key=api_key, base_url=base_url)
         self.async_client = AsyncOpenAI(api_key=api_key, base_url=base_url)
 

@@ -147,10 +147,10 @@ class OpenAICompatibleProvider(LLMProvider):
                 f"Original error: {e}"
             )
         except requests.exceptions.Timeout:
-            raise TimeoutError(f"Request to {self.base_url} timed out after {self.timeout}s")
+            raise TimeoutError(f"Timeout in {self.__class__.__name__}: Request to {self.base_url} timed out after {self.timeout}s")
         except requests.exceptions.HTTPError as e:
             raise Exception(
-                f"HTTP error from {self.base_url}: {e.response.status_code} - {e.response.text}"
+                f"HTTP error in {self.__class__.__name__}: HTTP error from {self.base_url}: {e.response.status_code} - {e.response.text}"
             )
 
         data = response.json()

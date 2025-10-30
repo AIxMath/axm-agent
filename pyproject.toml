@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "axm-agent"
-version = "0.2.2"
+version = "0.2.3"
 description = "A simple, elegant Python framework for building AI agents with decorators, MCP support, and powerful utilities"
 readme = "README.md"
 requires-python = ">=3.9"

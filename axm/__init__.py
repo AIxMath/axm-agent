@@ -2,7 +2,7 @@
 AXM Agent - A simple, elegant Python framework for building AI agents
 """
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 
 from axm.core.agent import Agent
 from axm.core.decorators import tool, agent_method

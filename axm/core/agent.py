@@ -205,6 +205,7 @@ class Agent:
                 tools=tools_list,
                 response_format=response_format,
                 model=self.config.model,
+                timeout=self.config.timeout,
             )
 
             # Add assistant response to memory
@@ -284,6 +285,7 @@ class Agent:
                 tools=tools_list,
                 response_format=response_format,
                 model=self.config.model,
+                timeout=self.config.timeout,
             )
 
             self.memory.add_message(response)
@@ -341,6 +343,7 @@ class Agent:
             temperature=self.config.temperature,
             max_tokens=self.config.max_tokens,
             model=self.config.model,
+            timeout=self.config.timeout,
         ):
             yield chunk
 
@@ -353,6 +356,7 @@ class Agent:
             temperature=self.config.temperature,
             max_tokens=self.config.max_tokens,
             model=self.config.model,
+            timeout=self.config.timeout,
         ):
             yield chunk
 
